@@ -1,10 +1,11 @@
-import { useState, useEffect } from "react";
+import { useState, useEffect, useRef } from "react";
 import {
   Coffee, Search, Heart, Star, MapPin, Clock, Wifi, Zap, Car,
   ChevronRight, ChevronLeft, ChevronDown, Send, Brain, Sparkles,
   Home, Navigation, ArrowRight, Share2, Bookmark, Filter, X, Check,
   MessageSquare, TrendingUp, Camera, Tag, Bot,
   User, ShoppingBag, Map, Leaf, Utensils, Globe,
+  Volume2, VolumeX,
 } from "lucide-react";
 
 type Page = "home" | "mood" | "rekomendasi" | "pencarian" | "detail" | "menu" | "promo" | "umkm" | "ulasan" | "favorit" | "profil";
@@ -2547,6 +2548,34 @@ export default function App() {
   const [globalSearchQuery, setGlobalSearchQuery] = useState("");
   const [showPreloader, setShowPreloader] = useState(true);
   const [selectedShopId, setSelectedShopId] = useState<string>("tanamera");
+  const [isAudioPlaying, setIsAudioPlaying] = useState(false);
+  const audioRef = useRef<HTMLAudioElement | null>(null);
+
+  useEffect(() => {
+    // Instantiate audio object
+    audioRef.current = new Audio("/assets/sound/backsoud-temukopi.mp3");
+    audioRef.current.loop = true;
+
+    // Cleanup on unmount
+    return () => {
+      if (audioRef.current) {
+        audioRef.current.pause();
+        audioRef.current = null;
+      }
+    };
+  }, []);
+
+  useEffect(() => {
+    if (!audioRef.current) return;
+    if (isAudioPlaying) {
+      audioRef.current.play().catch((err) => {
+        console.warn("Playback prevented or failed:", err);
+        setIsAudioPlaying(false);
+      });
+    } else {
+      audioRef.current.pause();
+    }
+  }, [isAudioPlaying]);
 
   useEffect(() => {
     const timer = setTimeout(() => {
@@ -2668,6 +2697,31 @@ export default function App() {
         </main>
       </div>
       <BottomNav page={page} nav={nav} />
+
+      {/* Floating Audio Player Button */}
+      <div className="fixed bottom-24 right-6 md:bottom-6 md:right-6 z-40 flex items-center gap-3">
+        {isAudioPlaying && (
+          <div className="bg-[#2C1810]/90 backdrop-blur-md text-[#FAF6F0] px-3.5 py-2 rounded-2xl text-[10px] font-extrabold tracking-wider border border-[#C8813A]/25 shadow-lg animate-pulse flex items-center gap-1.5">
+            <span className="inline-block w-1.5 h-1.5 rounded-full bg-emerald-500 animate-ping" />
+            MENYEDUH ALUNAN KOPI
+          </div>
+        )}
+        <button
+          onClick={() => setIsAudioPlaying(!isAudioPlaying)}
+          className="w-12 h-12 rounded-full bg-[#FAF6F0]/95 backdrop-blur-md border border-[#2C1810]/15 hover:border-[#C8813A]/50 hover:bg-white text-[#2C1810] hover:text-[#C8813A] shadow-lg hover:shadow-xl transition-all duration-300 flex items-center justify-center cursor-pointer group active:scale-95"
+          title={isAudioPlaying ? "Hentikan Musik" : "Putar Musik Latar"}
+        >
+          {isAudioPlaying ? (
+            <div className="flex items-end gap-[3px] h-3.5">
+              <span className="w-[3px] h-2 bg-[#C8813A] rounded-full animate-soundwave-1" />
+              <span className="w-[3px] h-3.5 bg-[#C8813A] rounded-full animate-soundwave-2" />
+              <span className="w-[3px] h-2.5 bg-[#C8813A] rounded-full animate-soundwave-3" />
+            </div>
+          ) : (
+            <VolumeX className="w-5 h-5 transition-transform group-hover:scale-110" />
+          )}
+        </button>
+      </div>
     </div>
   );
 }
