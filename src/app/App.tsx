@@ -1,12 +1,24 @@
-import { useState, useEffect, useRef } from "react";
+import { useState, useEffect } from "react";
 import {
   Coffee, Search, Heart, Star, MapPin, Clock, Wifi, Zap, Car,
   ChevronRight, ChevronLeft, ChevronDown, Send, Brain, Sparkles,
   Home, Navigation, ArrowRight, Share2, Bookmark, Filter, X, Check,
   MessageSquare, TrendingUp, Camera, Tag, Bot,
   User, ShoppingBag, Map, Leaf, Utensils, Globe,
-  Volume2, VolumeX,
 } from "lucide-react";
+import { ImageWithFallback } from "@/app/components/figma/ImageWithFallback";
+
+// Import category icons
+import nugasIcon from "@/imports/nugas.png";
+import meetingIcon from "@/imports/meeting.png";
+import dateIcon from "@/imports/date.png";
+import nongkrongIcon from "@/imports/nongkrong.png";
+import healingIcon from "@/imports/healing.png";
+import malamIcon from "@/imports/malam.png";
+
+// Import favorit page icons
+import favIcon from "@/imports/fav.png";
+import clockIcon from "@/imports/clock.png";
 
 type Page = "home" | "mood" | "rekomendasi" | "pencarian" | "detail" | "menu" | "promo" | "umkm" | "ulasan" | "favorit" | "profil";
 
@@ -296,12 +308,12 @@ const COFFEES = [
 ];
 
 const CATEGORIES = [
-  { id: "Nugas", label: "Nugas", emoji: "📚" },
-  { id: "Meeting", label: "Meeting", emoji: "💼" },
-  { id: "Date", label: "Date", emoji: "🌹" },
-  { id: "Nongkrong", label: "Nongkrong", emoji: "👥" },
-  { id: "Healing", label: "Healing", emoji: "🌿" },
-  { id: "Malam", label: "Malam Hari", emoji: "🌙" },
+  { id: "Nugas", label: "Nugas", icon: nugasIcon },
+  { id: "Meeting", label: "Meeting", icon: meetingIcon },
+  { id: "Date", label: "Date", icon: dateIcon },
+  { id: "Nongkrong", label: "Nongkrong", icon: nongkrongIcon },
+  { id: "Healing", label: "Healing", icon: healingIcon },
+  { id: "Malam", label: "Malam Hari", icon: malamIcon },
 ];
 
 // ── Atoms ──────────────────────────────────────────────────────────────────────
@@ -658,8 +670,12 @@ function HomePage({
               }}
               className="flex flex-col items-center gap-3 p-6 bg-card rounded-3xl border border-border/40 hover:border-[#C8813A]/30 hover:bg-[#FAF6F0] hover:shadow-[0_15px_30px_rgba(200,129,58,0.08)] hover:-translate-y-1.5 transition-spring group cursor-pointer"
             >
-              <div className="w-14 h-14 rounded-2xl bg-[#F0E8DC]/40 group-hover:bg-[#C8813A]/10 flex items-center justify-center text-3xl transition-spring">
-                <span className="emoji-wiggle">{cat.emoji}</span>
+              <div className="w-14 h-14 rounded-2xl bg-[#F0E8DC]/40 group-hover:bg-[#C8813A]/10 flex items-center justify-center transition-spring overflow-hidden">
+                <ImageWithFallback
+                  src={cat.icon}
+                  alt={`${cat.label} icon`}
+                  className="w-10 h-10 object-contain"
+                />
               </div>
               <span className="text-sm font-bold text-[#2C1810] group-hover:text-[#C8813A] transition-colors duration-300">
                 {cat.label}
@@ -1232,7 +1248,7 @@ function PencarianPage({
     <div className="max-w-7xl mx-auto px-4 sm:px-6 lg:px-8 py-10 animate-fadeIn">
       <div className="grid grid-cols-1 lg:grid-cols-12 gap-8 items-start">
         {/* Filter Sidebar */}
-        <div className="lg:col-span-4 bg-card border border-border/80 rounded-3xl p-6 shadow-xl lg:sticky lg:top-24 z-10">
+        <div className="lg:col-span-4 bg-card border border-border/80 rounded-3xl p-6 shadow-xl sticky top-24">
           <h3 className="font-extrabold text-[#2C1810] text-base mb-6 border-b border-border/40 pb-3 flex items-center gap-2">
             <Filter className="w-4 h-4 text-[#C8813A]" /> Penyaring Kedai
           </h3>
@@ -2219,12 +2235,17 @@ function FavoritPage({
           <button
             key={tab}
             onClick={() => setActiveTab(tab)}
-            className={`px-6 py-3.5 text-sm font-extrabold capitalize relative transition-colors ${activeTab === tab
+            className={`px-6 py-3.5 text-sm font-extrabold capitalize relative transition-colors flex items-center gap-2 ${activeTab === tab
                 ? "text-[#C8813A]"
                 : "text-[#8B6B4A] hover:text-[#2C1810]"
               }`}
           >
-            {tab === "favorit" ? "💖 Favorit Saya" : "⏱️ Baru Saja Dilihat"}
+            <ImageWithFallback
+              src={tab === "favorit" ? favIcon : clockIcon}
+              alt={tab === "favorit" ? "Favorit icon" : "Clock icon"}
+              className={tab === "favorit" ? "w-4 h-4 object-contain" : "w-5 h-5 object-contain"}
+            />
+            {tab === "favorit" ? "Favorit Saya" : "Baru Saja Dilihat"}
             {activeTab === tab && (
               <span className="absolute bottom-0 left-0 right-0 h-0.5 bg-[#C8813A]" />
             )}
@@ -2548,34 +2569,6 @@ export default function App() {
   const [globalSearchQuery, setGlobalSearchQuery] = useState("");
   const [showPreloader, setShowPreloader] = useState(true);
   const [selectedShopId, setSelectedShopId] = useState<string>("tanamera");
-  const [isAudioPlaying, setIsAudioPlaying] = useState(false);
-  const audioRef = useRef<HTMLAudioElement | null>(null);
-
-  useEffect(() => {
-    // Instantiate audio object
-    audioRef.current = new Audio("/assets/sound/backsoud-temukopi.mp3");
-    audioRef.current.loop = true;
-
-    // Cleanup on unmount
-    return () => {
-      if (audioRef.current) {
-        audioRef.current.pause();
-        audioRef.current = null;
-      }
-    };
-  }, []);
-
-  useEffect(() => {
-    if (!audioRef.current) return;
-    if (isAudioPlaying) {
-      audioRef.current.play().catch((err) => {
-        console.warn("Playback prevented or failed:", err);
-        setIsAudioPlaying(false);
-      });
-    } else {
-      audioRef.current.pause();
-    }
-  }, [isAudioPlaying]);
 
   useEffect(() => {
     const timer = setTimeout(() => {
@@ -2691,37 +2684,11 @@ export default function App() {
               nav={nav}
               shops={shops}
               claimedPromos={claimedPromos}
-              setSelectedShopId={setSelectedShopId}
             />
           )}
         </main>
       </div>
       <BottomNav page={page} nav={nav} />
-
-      {/* Floating Audio Player Button */}
-      <div className="fixed bottom-24 right-6 md:bottom-6 md:right-6 z-40 flex items-center gap-3">
-        {isAudioPlaying && (
-          <div className="bg-[#2C1810]/90 backdrop-blur-md text-[#FAF6F0] px-3.5 py-2 rounded-2xl text-[10px] font-extrabold tracking-wider border border-[#C8813A]/25 shadow-lg animate-pulse flex items-center gap-1.5">
-            <span className="inline-block w-1.5 h-1.5 rounded-full bg-emerald-500 animate-ping" />
-            MENYEDUH ALUNAN KOPI
-          </div>
-        )}
-        <button
-          onClick={() => setIsAudioPlaying(!isAudioPlaying)}
-          className="w-12 h-12 rounded-full bg-[#FAF6F0]/95 backdrop-blur-md border border-[#2C1810]/15 hover:border-[#C8813A]/50 hover:bg-white text-[#2C1810] hover:text-[#C8813A] shadow-lg hover:shadow-xl transition-all duration-300 flex items-center justify-center cursor-pointer group active:scale-95"
-          title={isAudioPlaying ? "Hentikan Musik" : "Putar Musik Latar"}
-        >
-          {isAudioPlaying ? (
-            <div className="flex items-end gap-[3px] h-3.5">
-              <span className="w-[3px] h-2 bg-[#C8813A] rounded-full animate-soundwave-1" />
-              <span className="w-[3px] h-3.5 bg-[#C8813A] rounded-full animate-soundwave-2" />
-              <span className="w-[3px] h-2.5 bg-[#C8813A] rounded-full animate-soundwave-3" />
-            </div>
-          ) : (
-            <VolumeX className="w-5 h-5 transition-transform group-hover:scale-110" />
-          )}
-        </button>
-      </div>
     </div>
   );
 }
