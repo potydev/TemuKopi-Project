@@ -5,7 +5,7 @@ import {
   ChevronRight, ChevronLeft, ChevronDown, Send, Brain, Sparkles,
   Home, Navigation, ArrowRight, Share2, Bookmark, Filter, X, Check,
   MessageSquare, TrendingUp, Camera, Tag, Bot,
-  User, ShoppingBag, Map, Leaf, Utensils, Globe,
+  User, ShoppingBag, Map, Leaf, Utensils, Globe, Volume2, VolumeX,
 } from "lucide-react";
 import { ImageWithFallback } from "@/app/components/figma/ImageWithFallback";
 
@@ -2573,6 +2573,49 @@ export default function App() {
   const [showPreloader, setShowPreloader] = useState(true);
   const [selectedShopId, setSelectedShopId] = useState<string>("tanamera");
 
+  const [isPlaying, setIsPlaying] = useState(() => {
+    const saved = localStorage.getItem("temukopi_music");
+    return saved === "true";
+  });
+  const [audio] = useState(() => {
+    const a = new Audio("/assets/sound/backsoud-temukopi.mp3");
+    a.loop = true;
+    a.volume = 0.3;
+    return a;
+  });
+
+  useEffect(() => {
+    if (isPlaying) {
+      audio.play().catch((err) => {
+        console.log("Autoplay blocked by browser. User interaction required:", err);
+      });
+    } else {
+      audio.pause();
+    }
+  }, [isPlaying, audio]);
+
+  useEffect(() => {
+    const handleFirstInteraction = () => {
+      if (isPlaying) {
+        audio.play().catch(() => {});
+      }
+      document.removeEventListener("click", handleFirstInteraction);
+      document.removeEventListener("touchstart", handleFirstInteraction);
+    };
+    document.addEventListener("click", handleFirstInteraction);
+    document.addEventListener("touchstart", handleFirstInteraction);
+    return () => {
+      document.removeEventListener("click", handleFirstInteraction);
+      document.removeEventListener("touchstart", handleFirstInteraction);
+    };
+  }, [isPlaying, audio]);
+
+  useEffect(() => {
+    return () => {
+      audio.pause();
+    };
+  }, [audio]);
+
   useEffect(() => {
     const timer = setTimeout(() => {
       setShowPreloader(false);
@@ -2691,6 +2734,32 @@ export default function App() {
           )}
         </main>
       </div>
+      {/* Floating Audio Player Button */}
+      <button
+        onClick={() => {
+          const nextState = !isPlaying;
+          setIsPlaying(nextState);
+          localStorage.setItem("temukopi_music", String(nextState));
+        }}
+        className="fixed bottom-24 right-6 md:bottom-6 md:right-6 z-40 flex items-center gap-2.5 px-4 py-3 rounded-full bg-[#2C1810] text-[#FAF6F0] hover:bg-[#C8813A] transition-all duration-300 shadow-xl border border-white/10 group active:scale-95 cursor-pointer backdrop-blur-md"
+        title={isPlaying ? "Matikan Musik" : "Putar Musik"}
+      >
+        {isPlaying ? (
+          <div className="flex items-center gap-1.5">
+            <div className="flex items-end gap-0.5 h-3 w-3 mr-0.5">
+              <span className="w-0.5 bg-[#FAF6F0] rounded-full animate-soundwave-1 h-2.5" />
+              <span className="w-0.5 bg-[#FAF6F0] rounded-full animate-soundwave-2 h-3" />
+              <span className="w-0.5 bg-[#FAF6F0] rounded-full animate-soundwave-3 h-2" />
+            </div>
+            <Volume2 className="w-4 h-4" />
+          </div>
+        ) : (
+          <div className="flex items-center gap-1.5">
+            <VolumeX className="w-4 h-4 text-[#FAF6F0]/60" />
+            <span className="text-[10px] font-extrabold uppercase tracking-wider text-[#FAF6F0]/60 group-hover:text-white transition-colors">Muted</span>
+          </div>
+        )}
+      </button>
       <BottomNav page={page} nav={nav} />
     </div>
   );
