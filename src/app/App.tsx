@@ -1,4 +1,5 @@
 import { useState, useEffect } from "react";
+import { createPortal } from "react-dom";
 import {
   Coffee, Search, Heart, Star, MapPin, Clock, Wifi, Zap, Car,
   ChevronRight, ChevronLeft, ChevronDown, Send, Brain, Sparkles,
@@ -1951,13 +1952,13 @@ function PromoPage({
       </div>
 
       {/* Detail Modal */}
-      {selected !== null && (
-        <div className="fixed inset-0 z-50 flex items-center justify-center p-4 bg-black/40 backdrop-blur-md animate-fadeIn">
+      {selected !== null && createPortal(
+        <div className="fixed inset-0 z-50 flex items-center justify-center p-4 bg-black/60 backdrop-blur-md animate-fadeIn">
           <div
             className="absolute inset-0"
             onClick={() => setSelected(null)}
           />
-          <div className="relative bg-card border border-border/80 rounded-3xl p-8 max-w-md w-full shadow-2xl animate-scaleUp">
+          <div className="relative bg-[#FFFFFF] border border-border/80 rounded-3xl p-8 max-w-md w-full shadow-2xl animate-scaleUp">
             <button
               onClick={() => setSelected(null)}
               className="absolute top-4 right-4 w-9 h-9 rounded-full bg-[#FAF6F0] flex items-center justify-center border border-border/20 shadow-sm"
@@ -1987,7 +1988,8 @@ function PromoPage({
               {claimedPromos.has(selected) ? "✓ Kupon Berhasil Disimpan" : "Klaim Kupon Promo"}
             </button>
           </div>
-        </div>
+        </div>,
+        document.body
       )}
     </div>
   );
@@ -2161,7 +2163,7 @@ function UMKMPage({
       </div>
 
       {/* Success Modal Dialogue */}
-      {showSuccessModal && (
+      {showSuccessModal && createPortal(
         <div className="fixed inset-0 z-50 flex items-center justify-center p-4 bg-black/40 backdrop-blur-md animate-fadeIn">
           <div className="relative bg-card border border-border/80 rounded-3xl p-8 max-w-md w-full shadow-2xl text-center animate-scaleUp">
             <div className="w-16 h-16 rounded-full bg-emerald-100 flex items-center justify-center mx-auto mb-4 border border-emerald-200">
@@ -2192,7 +2194,8 @@ function UMKMPage({
               </button>
             </div>
           </div>
-        </div>
+        </div>,
+        document.body
       )}
     </div>
   );
