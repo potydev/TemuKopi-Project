@@ -5,7 +5,7 @@ import {
   ChevronRight, ChevronLeft, ChevronDown, Send, Brain, Sparkles,
   Home, Navigation, ArrowRight, Share2, Bookmark, Filter, X, Check,
   MessageSquare, TrendingUp, Camera, Tag, Bot,
-  User, ShoppingBag, Map, Leaf, Utensils, Globe, Volume2, VolumeX,
+  User, ShoppingBag, Map, Leaf, Utensils, Globe, Volume2, VolumeX, BookOpen,
 } from "lucide-react";
 import { ImageWithFallback } from "@/app/components/figma/ImageWithFallback";
 
@@ -610,7 +610,12 @@ function HomePage({
   };
 
   return (
-    <div className="animate-fadeIn">
+    <div className="animate-fadeIn relative overflow-hidden">
+      {/* Background Decorative Blur circles */}
+      <div className="absolute top-[20%] left-[-10%] w-[300px] h-[300px] rounded-full bg-[#C8813A]/5 blur-3xl pointer-events-none" />
+      <div className="absolute top-[50%] right-[-10%] w-[400px] h-[400px] rounded-full bg-[#2C1810]/5 blur-3xl pointer-events-none" />
+      <div className="absolute top-[80%] left-[-15%] w-[350px] h-[350px] rounded-full bg-[#C8813A]/5 blur-3xl pointer-events-none" />
+
       {/* Hero */}
       <section
         className="relative h-[560px] md:h-[640px] flex items-center overflow-hidden"
@@ -653,6 +658,13 @@ function HomePage({
             </div>
           </div>
         </div>
+        
+        {/* SVG Wave Separator */}
+        <div className="absolute bottom-0 left-0 right-0 z-10 overflow-hidden leading-none">
+          <svg viewBox="0 0 1200 120" preserveAspectRatio="none" className="relative block w-full h-[40px] text-background fill-current">
+            <path d="M0,0 C150,90 350,120 600,100 C850,80 1050,110 1200,90 L1200,120 L0,120 Z"></path>
+          </svg>
+        </div>
       </section>
  
       {/* Ambiance Categories */}
@@ -683,6 +695,71 @@ function HomePage({
               </span>
             </button>
           ))}
+        </div>
+      </section>
+
+      {/* Spotlight Cafe */}
+      <section className="max-w-7xl mx-auto px-4 sm:px-6 lg:px-8 pb-20">
+        <div className="text-center mb-10">
+          <span className="text-[#C8813A] bg-[#C8813A]/10 px-3 py-1 rounded-full text-xs font-extrabold tracking-wider uppercase inline-flex items-center gap-1.5 mb-2 border border-[#C8813A]/20">
+            <Star className="w-3.5 h-3.5 fill-[#C8813A] text-[#C8813A]" /> Sorotan Utama
+          </span>
+          <h2 className="text-2xl md:text-3xl font-extrabold text-[#2C1810]">Kedai Pilihan Minggu Ini</h2>
+          <p className="text-sm text-[#8B6B4A] mt-2 font-medium">Coffee shop dengan rating terbaik dan kenyamanan maksimal pilihan redaksi</p>
+        </div>
+        
+        <div className="bg-card border border-border/40 rounded-[32px] overflow-hidden shadow-xl hover:shadow-2xl transition-all duration-500 grid md:grid-cols-12 gap-0 relative group">
+          {/* Left: Image with Zoom Effect */}
+          <div className="md:col-span-7 relative h-72 md:h-auto overflow-hidden">
+            <img 
+              src={unsplash("1498804103079-a6351b050096", 1000, 600)} 
+              alt="Tanamera Coffee" 
+              className="w-full h-full object-cover group-hover:scale-105 transition-transform duration-700 ease-out"
+            />
+            <div className="absolute inset-0 bg-gradient-to-t from-black/60 via-transparent to-transparent md:bg-gradient-to-r md:from-transparent md:via-transparent md:to-card/20" />
+            <span className="absolute top-4 left-4 bg-[#C8813A] text-white px-4 py-1.5 rounded-full text-xs font-bold shadow-md">
+              Pilihan Editor ★ 4.8
+            </span>
+          </div>
+          
+          {/* Right: Info Glassmorphism Card */}
+          <div className="md:col-span-5 p-8 md:p-12 flex flex-col justify-between bg-card text-left">
+            <div>
+              <div className="flex items-center gap-2 mb-4">
+                <span className="bg-[#FAF6F0] border border-border/20 px-3 py-1 rounded-lg text-[10px] font-extrabold text-[#8B6B4A]">Tenang</span>
+                <span className="bg-[#FAF6F0] border border-border/20 px-3 py-1 rounded-lg text-[10px] font-extrabold text-[#8B6B4A]">WiFi Cepat</span>
+                <span className="bg-[#FAF6F0] border border-border/20 px-3 py-1 rounded-lg text-[10px] font-extrabold text-[#8B6B4A]">Outdoor</span>
+              </div>
+              <h3 className="text-2xl md:text-3xl font-black text-[#2C1810] mb-3 group-hover:text-[#C8813A] transition-colors duration-300">
+                Tanamera Coffee
+              </h3>
+              <p className="text-[#8B6B4A] text-xs font-semibold leading-relaxed mb-6">
+                Menyajikan cita rasa kopi Nusantara asli dengan standard roasting internasional. Tempat yang sangat ideal untuk bekerja secara remote (WFC) dengan ambiance tenang, dekorasi kayu hangat, dan kebun semi-outdoor yang asri.
+              </p>
+              
+              <div className="space-y-3 border-t border-border/30 pt-6">
+                <div className="flex items-center gap-3 text-xs text-[#8B6B4A] font-semibold">
+                  <MapPin className="w-4 h-4 text-[#C8813A] shrink-0" />
+                  <span>Kebayoran Baru, Jakarta Selatan</span>
+                </div>
+                <div className="flex items-center gap-3 text-xs text-[#8B6B4A] font-semibold">
+                  <Clock className="w-4 h-4 text-[#C8813A] shrink-0" />
+                  <span>07.00 - 22.00 WIB</span>
+                </div>
+              </div>
+            </div>
+            
+            <button 
+              onClick={() => {
+                setSelectedShopId("tanamera");
+                nav("detail");
+              }}
+              className="mt-8 w-full py-4 bg-[#2C1810] text-[#FAF6F0] hover:bg-[#C8813A] rounded-2xl font-extrabold text-sm transition-spring shadow-lg flex items-center justify-center gap-2 cursor-pointer group"
+            >
+              Lihat Detail Menu & Ulasan 
+              <ArrowRight className="w-4 h-4 group-hover:translate-x-1 transition-transform" />
+            </button>
+          </div>
         </div>
       </section>
  
@@ -718,6 +795,48 @@ function HomePage({
           ))}
         </div>
       </section>
+
+      {/* Stats Counter Section */}
+      <section className="max-w-7xl mx-auto px-4 sm:px-6 lg:px-8 pb-20">
+        <div className="bg-[#FAF6F0]/80 border border-border/30 rounded-[32px] p-10 md:p-12 shadow-lg backdrop-blur-md relative overflow-hidden">
+          <div className="absolute -top-20 -left-20 w-64 h-64 bg-[#C8813A]/5 rounded-full blur-3xl" />
+          <div className="absolute -bottom-20 -right-20 w-64 h-64 bg-[#2C1810]/5 rounded-full blur-3xl" />
+          
+          <div className="grid grid-cols-2 lg:grid-cols-4 gap-8 md:gap-6 relative z-10 text-center">
+            <div className="flex flex-col items-center p-4 group hover:scale-105 transition-spring">
+              <div className="w-12 h-12 rounded-2xl bg-[#C8813A]/10 flex items-center justify-center text-[#C8813A] mb-4 group-hover:bg-[#C8813A] group-hover:text-white transition-colors duration-300">
+                <Coffee className="w-6 h-6" />
+              </div>
+              <span className="text-3xl md:text-4xl font-black text-[#2C1810] tracking-tight">150+</span>
+              <span className="text-xs md:text-sm text-[#8B6B4A] font-bold mt-2">Kedai Terdaftar</span>
+            </div>
+            
+            <div className="flex flex-col items-center p-4 group hover:scale-105 transition-spring">
+              <div className="w-12 h-12 rounded-2xl bg-[#C8813A]/10 flex items-center justify-center text-[#C8813A] mb-4 group-hover:bg-[#C8813A] group-hover:text-white transition-colors duration-300">
+                <Leaf className="w-6 h-6" />
+              </div>
+              <span className="text-3xl md:text-4xl font-black text-[#2C1810] tracking-tight">45+</span>
+              <span className="text-xs md:text-sm text-[#8B6B4A] font-bold mt-2">Biji Single Origin</span>
+            </div>
+            
+            <div className="flex flex-col items-center p-4 group hover:scale-105 transition-spring">
+              <div className="w-12 h-12 rounded-2xl bg-[#C8813A]/10 flex items-center justify-center text-[#C8813A] mb-4 group-hover:bg-[#C8813A] group-hover:text-white transition-colors duration-300">
+                <Tag className="w-6 h-6" />
+              </div>
+              <span className="text-3xl md:text-4xl font-black text-[#2C1810] tracking-tight">12K+</span>
+              <span className="text-xs md:text-sm text-[#8B6B4A] font-bold mt-2">Promo Diklaim</span>
+            </div>
+            
+            <div className="flex flex-col items-center p-4 group hover:scale-105 transition-spring">
+              <div className="w-12 h-12 rounded-2xl bg-[#C8813A]/10 flex items-center justify-center text-[#C8813A] mb-4 group-hover:bg-[#C8813A] group-hover:text-white transition-colors duration-300">
+                <Globe className="w-6 h-6" />
+              </div>
+              <span className="text-3xl md:text-4xl font-black text-[#2C1810] tracking-tight">12</span>
+              <span className="text-xs md:text-sm text-[#8B6B4A] font-bold mt-2">Kota Terjangkau</span>
+            </div>
+          </div>
+        </div>
+      </section>
  
       {/* AI CTA Banner */}
       <section className="max-w-7xl mx-auto px-4 sm:px-6 lg:px-8 pb-20">
@@ -743,6 +862,176 @@ function HomePage({
           >
             Coba Mood Finder AI <ArrowRight className="w-4 h-4 group-hover:translate-x-1.5 transition-transform duration-300 ease-out" />
           </button>
+        </div>
+      </section>
+
+      {/* Journal & Coffee Tips Section */}
+      <section className="max-w-7xl mx-auto px-4 sm:px-6 lg:px-8 pb-20 animate-fadeIn">
+        <div className="text-center mb-10">
+          <span className="text-[#C8813A] bg-[#C8813A]/10 px-3 py-1 rounded-full text-xs font-extrabold tracking-wider uppercase inline-flex items-center gap-1.5 mb-2 border border-[#C8813A]/20">
+            <BookOpen className="w-3.5 h-3.5" /> Edukasi & Gaya Hidup
+          </span>
+          <h2 className="text-2xl md:text-3xl font-extrabold text-[#2C1810]">Jurnal & Tips Kopi</h2>
+          <p className="text-sm text-[#8B6B4A] mt-2 font-medium">Pelajari racikan, panduan berkunjung, dan budaya kopi terbaik</p>
+        </div>
+        
+        <div className="grid grid-cols-1 md:grid-cols-3 gap-8 text-left">
+          {/* Card 1 */}
+          <div className="bg-card border border-border/40 rounded-[32px] overflow-hidden shadow-md hover:shadow-xl hover:-translate-y-1.5 transition-spring group">
+            <div className="h-48 overflow-hidden relative">
+              <img 
+                src={unsplash("1501339847302-ac426a4a7cbb", 600, 400)} 
+                alt="Work From Cafe" 
+                className="w-full h-full object-cover group-hover:scale-105 transition-transform duration-500"
+              />
+              <span className="absolute bottom-4 left-4 bg-black/60 backdrop-blur-md text-white text-[10px] font-extrabold px-3 py-1 rounded-full">
+                Tips WFC
+              </span>
+            </div>
+            <div className="p-6">
+              <h3 className="text-lg font-extrabold text-[#2C1810] mb-2 leading-snug group-hover:text-[#C8813A] transition-colors duration-300">
+                5 Tips Menemukan Coffee Shop yang Nyaman untuk Work From Cafe
+              </h3>
+              <p className="text-xs text-[#8B6B4A] font-semibold leading-relaxed mb-4">
+                Tidak semua kedai kopi cocok untuk bekerja. Pelajari cara memilih kedai dengan kestabilan WiFi, stopkontak melimpah, dan pencahayaan yang pas.
+              </p>
+              <div className="text-[10px] font-bold text-[#C8813A] uppercase tracking-wider">
+                Baca Selengkapnya
+              </div>
+            </div>
+          </div>
+          
+          {/* Card 2 */}
+          <div className="bg-card border border-border/40 rounded-[32px] overflow-hidden shadow-md hover:shadow-xl hover:-translate-y-1.5 transition-spring group">
+            <div className="h-48 overflow-hidden relative">
+              <img 
+                src={unsplash("1447933601403-0c6688de566e", 600, 400)} 
+                alt="Arabica vs Robusta" 
+                className="w-full h-full object-cover group-hover:scale-105 transition-transform duration-500"
+              />
+              <span className="absolute bottom-4 left-4 bg-black/60 backdrop-blur-md text-white text-[10px] font-extrabold px-3 py-1 rounded-full">
+                Panduan Biji
+              </span>
+            </div>
+            <div className="p-6">
+              <h3 className="text-lg font-extrabold text-[#2C1810] mb-2 leading-snug group-hover:text-[#C8813A] transition-colors duration-300">
+                Mengenal Perbedaan Arabika & Robusta untuk Pemula
+              </h3>
+              <p className="text-xs text-[#8B6B4A] font-semibold leading-relaxed mb-4">
+                Sebelum memesan menu di kedai kopi favoritmu, ketahui perbedaan mendasar dari rasa asam Arabika dibandingkan rasa pekat pahit khas Robusta.
+              </p>
+              <div className="text-[10px] font-bold text-[#C8813A] uppercase tracking-wider">
+                Baca Selengkapnya
+              </div>
+            </div>
+          </div>
+          
+          {/* Card 3 */}
+          <div className="bg-card border border-border/40 rounded-[32px] overflow-hidden shadow-md hover:shadow-xl hover:-translate-y-1.5 transition-spring group">
+            <div className="h-48 overflow-hidden relative">
+              <img 
+                src={unsplash("1514432324607-a09d9b4aefdd", 600, 400)} 
+                alt="Taste Notes" 
+                className="w-full h-full object-cover group-hover:scale-105 transition-transform duration-500"
+              />
+              <span className="absolute bottom-4 left-4 bg-black/60 backdrop-blur-md text-white text-[10px] font-extrabold px-3 py-1 rounded-full">
+                Sains Kopi
+              </span>
+            </div>
+            <div className="p-6">
+              <h3 className="text-lg font-extrabold text-[#2C1810] mb-2 leading-snug group-hover:text-[#C8813A] transition-colors duration-300">
+                Cara Barista Profesional Membaca 'Taste Notes' Seduhan Kopi
+              </h3>
+              <p className="text-xs text-[#8B6B4A] font-semibold leading-relaxed mb-4">
+                Bisa merasakan hint buah beri, cokelat, hingga karamel di dalam kopi hitam polos? Temukan rahasia melatih lidahmu agar lebih sensitif.
+              </p>
+              <div className="text-[10px] font-bold text-[#C8813A] uppercase tracking-wider">
+                Baca Selengkapnya
+              </div>
+            </div>
+          </div>
+        </div>
+      </section>
+
+      {/* Community Testimonials */}
+      <section className="max-w-7xl mx-auto px-4 sm:px-6 lg:px-8 pb-20 animate-fadeIn">
+        <div className="text-center mb-10">
+          <span className="text-[#C8813A] bg-[#C8813A]/10 px-3 py-1 rounded-full text-xs font-extrabold tracking-wider uppercase inline-flex items-center gap-1.5 mb-2 border border-[#C8813A]/20">
+            <MessageSquare className="w-3.5 h-3.5" /> Ulasan Jujur
+          </span>
+          <h2 className="text-2xl md:text-3xl font-extrabold text-[#2C1810]">Kata Mereka Tentang TemuKopi</h2>
+          <p className="text-sm text-[#8B6B4A] mt-2 font-medium">Cerita nyata dari komunitas penikmat kopi yang menemukan kedai favorit mereka</p>
+        </div>
+        
+        <div className="grid grid-cols-1 md:grid-cols-3 gap-6 text-left">
+          {/* Review 1 */}
+          <div className="bg-[#FAF6F0]/50 border border-border/30 rounded-[32px] p-8 shadow-sm backdrop-blur-sm relative group hover:bg-[#FAF6F0] hover:shadow-md transition-all duration-300">
+            <div className="flex items-center gap-4 mb-5">
+              <img 
+                src="https://images.unsplash.com/photo-1494790108377-be9c29b29330?w=100&h=100&fit=crop&crop=faces" 
+                alt="Nadia Kirana" 
+                className="w-12 h-12 rounded-2xl object-cover border border-[#C8813A]/20 shadow-sm"
+              />
+              <div>
+                <h4 className="text-sm font-extrabold text-[#2C1810]">Nadia Kirana</h4>
+                <p className="text-[10px] text-[#C8813A] font-bold">Freelance Designer</p>
+              </div>
+            </div>
+            <div className="flex gap-0.5 text-amber-500 mb-3">
+              {[...Array(5)].map((_, i) => (
+                <Star key={i} className="w-3.5 h-3.5 fill-current text-amber-500" />
+              ))}
+            </div>
+            <p className="text-xs text-[#8B6B4A] font-semibold leading-relaxed italic">
+              "Fitur Mood Finder AI-nya juara banget! Iseng pilih mood 'Butuh Inspirasi', langsung direkomendasiin Tanamera Coffee dan rasanya bener-bener cocok sama suasana hati saya hari itu. Definisinya andalan baru pas mau WFC!"
+            </p>
+          </div>
+          
+          {/* Review 2 */}
+          <div className="bg-[#FAF6F0]/50 border border-border/30 rounded-[32px] p-8 shadow-sm backdrop-blur-sm relative group hover:bg-[#FAF6F0] hover:shadow-md transition-all duration-300">
+            <div className="flex items-center gap-4 mb-5">
+              <img 
+                src="https://images.unsplash.com/photo-1507003211169-0a1dd7228f2d?w=100&h=100&fit=crop&crop=faces" 
+                alt="Aditya Pratama" 
+                className="w-12 h-12 rounded-2xl object-cover border border-[#C8813A]/20 shadow-sm"
+              />
+              <div>
+                <h4 className="text-sm font-extrabold text-[#2C1810]">Aditya Pratama</h4>
+                <p className="text-[10px] text-[#C8813A] font-bold">Software Engineer</p>
+              </div>
+            </div>
+            <div className="flex gap-0.5 text-amber-500 mb-3">
+              {[...Array(5)].map((_, i) => (
+                <Star key={i} className="w-3.5 h-3.5 fill-current text-amber-500" />
+              ))}
+            </div>
+            <p className="text-xs text-[#8B6B4A] font-semibold leading-relaxed italic">
+              "Suka banget sama info fasilitasnya yang super detail. Di sini tertulis lengkap mana yang ada colokan, WiFi cepat, sampai area indoor ber-AC. Sangat mempermudah saya nyari tempat meeting santai bareng klien."
+            </p>
+          </div>
+          
+          {/* Review 3 */}
+          <div className="bg-[#FAF6F0]/50 border border-border/30 rounded-[32px] p-8 shadow-sm backdrop-blur-sm relative group hover:bg-[#FAF6F0] hover:shadow-md transition-all duration-300">
+            <div className="flex items-center gap-4 mb-5">
+              <img 
+                src="https://images.unsplash.com/photo-1438761681033-6461ffad8d80?w=100&h=100&fit=crop&crop=faces" 
+                alt="Siti Rahma" 
+                className="w-12 h-12 rounded-2xl object-cover border border-[#C8813A]/20 shadow-sm"
+              />
+              <div>
+                <h4 className="text-sm font-extrabold text-[#2C1810]">Siti Rahma</h4>
+                <p className="text-[10px] text-[#C8813A] font-bold">Kopi Enthusiast</p>
+              </div>
+            </div>
+            <div className="flex gap-0.5 text-amber-500 mb-3">
+              {[...Array(5)].map((_, i) => (
+                <Star key={i} className="w-3.5 h-3.5 fill-current text-amber-500" />
+              ))}
+            </div>
+            <p className="text-xs text-[#8B6B4A] font-semibold leading-relaxed italic">
+              "Klaim kupon promonya gampang banget dan beneran bisa dipakai pas bayar di kasir. Websitenya juga cepet dibuka, visualnya rapi dan sangat memanjakan mata penikmat estestika kopi. Sukses terus TemuKopi!"
+            </p>
+          </div>
         </div>
       </section>
 
