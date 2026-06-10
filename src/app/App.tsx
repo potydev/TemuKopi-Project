@@ -746,6 +746,52 @@ function HomePage({
         </div>
       </section>
 
+      {/* Testimonial Pengguna */}
+      <section className="max-w-7xl mx-auto px-4 sm:px-6 lg:px-8 pb-16">
+        <div className="text-center mb-10">
+          <h2 className="text-2xl md:text-3xl font-extrabold text-[#2C1810]">Apa Kata Penikmat Kopi?</h2>
+          <p className="text-sm text-[#8B6B4A] mt-2 font-medium">Pengalaman nyata pengguna TemuKopi di seluruh Indonesia</p>
+        </div>
+        <div className="grid grid-cols-1 md:grid-cols-3 gap-6">
+          {[
+            { name: "Aulia Rahma", city: "Jakarta", avatar: "AR", text: "TemuKopi benar-benar mengubah cara saya mencari coffee shop. AI-nya akurat banget ngerti mood saya!", rating: 5 },
+            { name: "Dimas Pratama", city: "Bandung", avatar: "DP", text: "Fitur taste profile-nya keren! Sekarang saya selalu cocok dengan kopi yang dipesan. Nggak pernah kecewa lagi.", rating: 5 },
+            { name: "Sarah Amelia", city: "Surabaya", avatar: "SA", text: "Udah nemu banyak hidden gem coffee shop berkat TemuKopi. Promo-promonya juga bikin hemat banget!", rating: 4 },
+          ].map((t) => (
+            <div key={t.name} className="bg-card border border-border/60 rounded-3xl p-6 shadow-sm hover:shadow-md transition-all">
+              <div className="flex gap-0.5 mb-4">{[1,2,3,4,5].map(s => <Star key={s} className={`w-4 h-4 ${s <= t.rating ? 'text-amber-500 fill-amber-500' : 'text-amber-200'}`} />)}</div>
+              <p className="text-xs text-[#8B6B4A] font-semibold leading-relaxed italic mb-5">&ldquo;{t.text}&rdquo;</p>
+              <div className="flex items-center gap-3 pt-4 border-t border-border/30">
+                <div className="w-10 h-10 rounded-full bg-[#2C1810] flex items-center justify-center text-[#FAF6F0] text-xs font-extrabold shrink-0 border-2 border-white shadow">{t.avatar}</div>
+                <div>
+                  <p className="font-extrabold text-sm text-[#2C1810]">{t.name}</p>
+                  <p className="text-[10px] text-[#8B6B4A] font-bold">{t.city}</p>
+                </div>
+              </div>
+            </div>
+          ))}
+        </div>
+      </section>
+
+      {/* Trust Stats */}
+      <section className="max-w-7xl mx-auto px-4 sm:px-6 lg:px-8 pb-20">
+        <div className="bg-[#2C1810] rounded-3xl p-8 md:p-10 shadow-xl">
+          <div className="grid grid-cols-2 md:grid-cols-4 gap-6 text-center">
+            {[
+              { value: "50.000+", label: "Penikmat Kopi" },
+              { value: "500+", label: "Kedai Partner" },
+              { value: "12", label: "Kota Terjangkau" },
+              { value: "4.8", label: "Rating Rata-rata" },
+            ].map((s) => (
+              <div key={s.label}>
+                <p className="text-3xl md:text-4xl font-black text-[#C8813A] tracking-tight">{s.value}</p>
+                <p className="text-xs text-[#A89278] font-bold mt-1 uppercase tracking-wider">{s.label}</p>
+              </div>
+            ))}
+          </div>
+        </div>
+      </section>
+
       <Footer nav={nav} />
     </div>
   );
@@ -841,8 +887,9 @@ function MoodFinderPage({
   };
 
   return (
-    <div className="max-w-7xl mx-auto px-4 sm:px-6 lg:px-8 py-10 animate-fadeIn">
-      <div className="grid grid-cols-1 lg:grid-cols-12 gap-8 items-start">
+    <div className="animate-fadeIn">
+      <div className="max-w-7xl mx-auto px-4 sm:px-6 lg:px-8 py-10">
+        <div className="grid grid-cols-1 lg:grid-cols-12 gap-8 items-start">
         {/* Left: Chat Container */}
         <div className="lg:col-span-7 flex flex-col h-[650px] bg-card border border-border/80 rounded-3xl overflow-hidden shadow-xl">
           {/* Header */}
@@ -1027,6 +1074,8 @@ function MoodFinderPage({
         </div>
       </div>
     </div>
+    <Footer nav={nav} />
+  </div>
   );
 }
 
@@ -1074,7 +1123,8 @@ function RekomendasiPage({ nav }: { nav: (p: Page) => void }) {
   };
 
   return (
-    <div className="max-w-7xl mx-auto px-4 sm:px-6 lg:px-8 py-10 animate-fadeIn">
+    <div className="animate-fadeIn">
+    <div className="max-w-7xl mx-auto px-4 sm:px-6 lg:px-8 py-10">
       <div className="mb-10 text-center">
         <h1 className="text-3xl font-extrabold text-[#2C1810] tracking-tight">
           Pencari Menu Kopi Sesuai Selera Lidah
@@ -1154,6 +1204,64 @@ function RekomendasiPage({ nav }: { nav: (p: Page) => void }) {
           </button>
         </div>
       </div>
+
+      {/* Kenali Profil Rasa Kopimu */}
+      <section className="mt-16 mb-12">
+        <h2 className="text-2xl font-extrabold text-[#2C1810] text-center mb-2 tracking-tight">Kenali 5 Elemen Rasa Kopi</h2>
+        <p className="text-sm text-[#8B6B4A] text-center font-medium mb-8 max-w-lg mx-auto">Pahami setiap dimensi rasa kopi untuk menemukan racikan yang paling cocok di lidahmu</p>
+        <div className="grid grid-cols-1 sm:grid-cols-3 lg:grid-cols-5 gap-4">
+          {[
+            { emoji: "🍯", title: "Manis", desc: "Tingkat gula alami dari biji kopi, susu, atau sirup. Cocok untuk pemula.", color: "from-amber-50 to-orange-50 border-amber-200" },
+            { emoji: "🥛", title: "Creamy", desc: "Tekstur gurih lembut dari susu segar, oat milk, atau foam kental.", color: "from-slate-50 to-gray-100 border-gray-200" },
+            { emoji: "💪", title: "Strong", desc: "Intensitas body kopi—semakin tinggi, semakin pekat dan berkarakter.", color: "from-red-50 to-rose-50 border-red-200" },
+            { emoji: "☕", title: "Pahit", desc: "Ciri khas espresso dan dark roast. Semakin pahit, semakin bernyali.", color: "from-stone-100 to-stone-50 border-stone-300" },
+            { emoji: "🌿", title: "Segar", desc: "Asam sitrus ringan dari light roast, memberikan sensasi fruity.", color: "from-emerald-50 to-green-50 border-emerald-200" },
+          ].map((item) => (
+            <div key={item.title} className={`bg-gradient-to-b ${item.color} rounded-3xl p-5 text-center border hover:shadow-md hover:-translate-y-1 transition-all duration-300`}>
+              <div className="text-3xl mb-3">{item.emoji}</div>
+              <h3 className="font-extrabold text-sm text-[#2C1810] mb-1.5">{item.title}</h3>
+              <p className="text-[11px] text-[#8B6B4A] font-medium leading-relaxed">{item.desc}</p>
+            </div>
+          ))}
+        </div>
+      </section>
+
+      {/* Fun Facts */}
+      <section className="mb-12">
+        <div className="grid grid-cols-1 sm:grid-cols-3 gap-4">
+          {[
+            { icon: <Zap className="w-5 h-5" />, fact: "1 shot espresso mengandung ~63mg kafein — setara satu teh hijau ukuran besar!" },
+            { icon: <Globe className="w-5 h-5" />, fact: "Indonesia adalah produsen kopi terbesar ke-4 di dunia dengan 700.000+ ton per tahun." },
+            { icon: <Coffee className="w-5 h-5" />, fact: "Kopi susu dengan gula aren adalah menu terlaris di 80% coffee shop Indonesia." },
+          ].map((item, i) => (
+            <div key={i} className="flex items-start gap-3.5 p-5 bg-card border border-border/50 rounded-2xl shadow-sm">
+              <div className="w-10 h-10 rounded-xl bg-[#F0E8DC] flex items-center justify-center text-[#C8813A] shrink-0">{item.icon}</div>
+              <p className="text-xs text-[#8B6B4A] font-semibold leading-relaxed">{item.fact}</p>
+            </div>
+          ))}
+        </div>
+      </section>
+
+      {/* CTA ke Mood Finder */}
+      <section className="mb-6">
+        <div className="rounded-3xl p-8 md:p-10 flex flex-col sm:flex-row items-center justify-between gap-6 bg-[#F0E8DC] border border-border/40 shadow-sm">
+          <div className="flex items-center gap-4">
+            <div className="w-14 h-14 rounded-2xl bg-[#2C1810] flex items-center justify-center shadow-md shrink-0">
+              <Brain className="w-7 h-7 text-[#F0C896]" />
+            </div>
+            <div>
+              <h3 className="font-extrabold text-[#2C1810] text-base">Masih Bingung Pilih Rasa?</h3>
+              <p className="text-xs text-[#8B6B4A] font-medium mt-0.5">Ceritakan mood-mu ke AI dan dapatkan rekomendasi otomatis!</p>
+            </div>
+          </div>
+          <button onClick={() => nav("mood")} className="shrink-0 px-6 py-3 bg-[#2C1810] text-[#FAF6F0] rounded-2xl font-bold text-sm hover:bg-[#C8813A] active:scale-95 transition-all shadow-md flex items-center gap-2 group cursor-pointer">
+            Coba Mood Finder AI <ArrowRight className="w-4 h-4 group-hover:translate-x-1 transition-transform" />
+          </button>
+        </div>
+      </section>
+    </div>
+
+    <Footer nav={nav} />
     </div>
   );
 }
@@ -1246,7 +1354,8 @@ function PencarianPage({
   }, [searchQuery, distance, selectedCity, facilities, sortBy]);
 
   return (
-    <div className="max-w-7xl mx-auto px-4 sm:px-6 lg:px-8 py-10 animate-fadeIn">
+    <div className="animate-fadeIn">
+    <div className="max-w-7xl mx-auto px-4 sm:px-6 lg:px-8 py-10">
       <div className="grid grid-cols-1 lg:grid-cols-12 gap-8 items-start">
         {/* Filter Sidebar */}
         <div className="lg:col-span-4 bg-card border border-border/80 rounded-3xl p-6 shadow-xl sticky top-24">
@@ -1364,9 +1473,31 @@ function PencarianPage({
             </div>
           </div>
 
-          <p className="text-xs text-[#8B6B4A] font-extrabold bg-[#F0E8DC]/40 px-4 py-2.5 rounded-xl border border-border/30 inline-block shadow-sm">
-            🎯 {filteredShops.length} coffee shop ditemukan
-          </p>
+          {/* Quick Tags */}
+          <div className="flex flex-wrap gap-2">
+            {["WiFi Kencang", "Outdoor Asri", "Cozy & Tenang", "Work Friendly", "Pet Friendly", "24 Jam"].map((tag) => (
+              <button
+                key={tag}
+                onClick={() => setSearchQuery(tag.split(" ")[0])}
+                className={`text-[10px] font-bold px-3 py-1.5 rounded-full border transition-all cursor-pointer ${
+                  searchQuery.toLowerCase().includes(tag.split(" ")[0].toLowerCase())
+                    ? "bg-[#2C1810] text-[#FAF6F0] border-[#2C1810]"
+                    : "bg-white border-border/60 text-[#8B6B4A] hover:border-[#C8813A] hover:text-[#C8813A]"
+                }`}
+              >
+                {tag}
+              </button>
+            ))}
+          </div>
+
+          <div className="flex items-center gap-4">
+            <p className="text-xs text-[#8B6B4A] font-extrabold bg-[#F0E8DC]/40 px-4 py-2.5 rounded-xl border border-border/30 inline-block shadow-sm">
+              🎯 {filteredShops.length} coffee shop ditemukan
+            </p>
+            <p className="text-[10px] text-[#8B6B4A] font-bold bg-white px-3 py-2 rounded-lg border border-border/30 shadow-sm">
+              ☕ {shops.length} kedai · {Array.from(new Set(shops.map(s => s.city))).length} kota
+            </p>
+          </div>
 
           {/* Cards List layout */}
           {paginatedShops.length === 0 ? (
@@ -1483,6 +1614,9 @@ function PencarianPage({
           )}
         </div>
       </div>
+    </div>
+
+    <Footer nav={nav} />
     </div>
   );
 }
@@ -1884,7 +2018,7 @@ function MenuPage({
 
 // ── Promo Page ─────────────────────────────────────────────────────────────────
 function PromoPage({
-  nav: _nav,
+  nav,
   claimedPromos,
   setClaimedPromos,
 }: {
@@ -1922,7 +2056,8 @@ function PromoPage({
   ];
 
   return (
-    <div className="max-w-7xl mx-auto px-4 sm:px-6 lg:px-8 py-10 animate-fadeIn">
+    <div className="animate-fadeIn">
+      <div className="max-w-7xl mx-auto px-4 sm:px-6 lg:px-8 py-10">
       <div className="mb-10 text-center">
         <h1 className="text-3xl font-extrabold text-[#2C1810] tracking-tight">Kupon Promo & Paket Hemat</h1>
         <p className="text-sm text-[#8B6B4A] mt-2 font-medium max-w-sm mx-auto">Klaim kupon promo menarik di bawah ini untuk nongkrong hemat di kedai kopi favorit!</p>
@@ -1950,6 +2085,72 @@ function PromoPage({
           </button>
         ))}
       </div>
+
+        {/* Cara Klaim Promo - 3 Steps */}
+        <section className="mt-16 mb-12">
+          <h2 className="text-2xl font-extrabold text-[#2C1810] text-center mb-2 tracking-tight">Cara Klaim Promo</h2>
+          <p className="text-sm text-[#8B6B4A] text-center font-medium mb-8 max-w-md mx-auto">Hanya 3 langkah mudah untuk menikmati promo spesial TemuKopi</p>
+          <div className="grid grid-cols-1 sm:grid-cols-3 gap-6">
+            {[
+              { step: "1", icon: <Tag className="w-6 h-6" />, title: "Pilih Promo", desc: "Jelajahi kupon promo yang tersedia dan pilih yang paling sesuai kebutuhanmu." },
+              { step: "2", icon: <Heart className="w-6 h-6" />, title: "Klaim Kupon", desc: "Klik tombol 'Klaim Kupon Promo' untuk menyimpan kupon ke akun profilmu." },
+              { step: "3", icon: <Coffee className="w-6 h-6" />, title: "Tunjukkan di Kasir", desc: "Buka kupon dari halaman Profil dan tunjukkan ke kasir saat memesan kopi." },
+            ].map((item) => (
+              <div key={item.step} className="relative bg-card border border-border/60 rounded-3xl p-6 text-center hover:shadow-lg hover:-translate-y-1 transition-all duration-300 group">
+                <div className="absolute -top-4 left-1/2 -translate-x-1/2 w-8 h-8 rounded-full bg-[#C8813A] text-white text-sm font-black flex items-center justify-center shadow-md">{item.step}</div>
+                <div className="w-14 h-14 rounded-2xl bg-[#F0E8DC]/60 flex items-center justify-center text-[#C8813A] mx-auto mb-4 mt-2 group-hover:bg-[#C8813A]/10 transition-colors">{item.icon}</div>
+                <h3 className="font-extrabold text-[#2C1810] text-sm mb-2">{item.title}</h3>
+                <p className="text-xs text-[#8B6B4A] font-medium leading-relaxed">{item.desc}</p>
+              </div>
+            ))}
+          </div>
+        </section>
+
+        {/* Testimonial Promo */}
+        <section className="mb-12">
+          <h2 className="text-2xl font-extrabold text-[#2C1810] text-center mb-2 tracking-tight">Kata Mereka Tentang Promo Kami</h2>
+          <p className="text-sm text-[#8B6B4A] text-center font-medium mb-8 max-w-md mx-auto">Pengguna yang sudah menikmati keuntungan promo TemuKopi</p>
+          <div className="grid grid-cols-1 sm:grid-cols-3 gap-6">
+            {[
+              { name: "Rizky Aditya", avatar: "RA", text: "Happy Hour-nya beneran hemat! Sering banget klaim promo ini buat ngopi sore bareng temen kantor.", rating: 5 },
+              { name: "Siti Nurhaliza", avatar: "SN", text: "Paket kopi + snack-nya worth it banget. Brownies almondnya juara, kopinya juga mantap!", rating: 5 },
+              { name: "Budi Santoso", avatar: "BS", text: "Buy 1 Get 1 pas banget buat date sama pacar. Hemat tapi tetap romantis. Terima kasih TemuKopi!", rating: 4 },
+            ].map((t) => (
+              <div key={t.name} className="bg-card border border-border/60 rounded-3xl p-6 shadow-sm hover:shadow-md transition-all">
+                <div className="flex items-center gap-3 mb-4">
+                  <div className="w-11 h-11 rounded-full bg-[#2C1810] flex items-center justify-center text-[#FAF6F0] text-xs font-extrabold shrink-0 border-2 border-white shadow">{t.avatar}</div>
+                  <div>
+                    <p className="font-extrabold text-sm text-[#2C1810]">{t.name}</p>
+                    <div className="flex gap-0.5 mt-0.5">
+                      {[1,2,3,4,5].map(s => <Star key={s} className={`w-3 h-3 ${s <= t.rating ? 'text-amber-500 fill-amber-500' : 'text-amber-200'}`} />)}
+                    </div>
+                  </div>
+                </div>
+                <p className="text-xs text-[#8B6B4A] font-semibold leading-relaxed italic">&ldquo;{t.text}&rdquo;</p>
+              </div>
+            ))}
+          </div>
+        </section>
+
+        {/* CTA Banner UMKM */}
+        <section className="mb-6">
+          <div className="rounded-3xl p-8 md:p-12 flex flex-col md:flex-row items-center justify-between gap-6 relative overflow-hidden shadow-xl" style={{ background: 'linear-gradient(135deg, #2C1810 0%, #5C3317 50%, #C8813A 100%)' }}>
+            <div className="absolute top-0 right-0 w-64 h-64 bg-white/5 rounded-full blur-3xl" />
+            <div className="relative z-10">
+              <span className="text-[#FAF6F0] bg-white/10 px-3 py-1 rounded-full text-[10px] font-extrabold tracking-wider uppercase inline-flex items-center gap-1.5 mb-3 border border-white/10">
+                <Sparkles className="w-3 h-3 text-[#F0C896]" /> Untuk Pemilik Kedai
+              </span>
+              <h2 className="text-2xl md:text-3xl font-extrabold text-white mb-2 leading-tight tracking-tight">Punya Kedai Kopi?</h2>
+              <p className="text-white/70 max-w-md leading-relaxed font-semibold text-sm">Pasang promo eksklusif toko Anda di TemuKopi dan jangkau ribuan penikmat kopi baru setiap harinya!</p>
+            </div>
+            <button onClick={() => nav('umkm')} className="shrink-0 px-8 py-4 bg-[#FAF6F0] text-[#2C1810] rounded-2xl font-bold hover:bg-white active:scale-95 transition-all hover:scale-103 shadow-lg relative z-10 flex items-center gap-2 group cursor-pointer text-sm">
+              Daftar Sekarang <ArrowRight className="w-4 h-4 group-hover:translate-x-1.5 transition-transform" />
+            </button>
+          </div>
+        </section>
+      </div>
+
+      <Footer nav={nav} />
 
       {/* Detail Modal */}
       {selected !== null && createPortal(
@@ -2052,7 +2253,8 @@ function UMKMPage({
   const chartData = [45, 62, 38, 71, 55, 83, 49, 67, 72, 88, 61, 75, 90, 54, 68, 43, 79, 65, 58, 82, 74, 91, 67, 53, 78, 84, 69, 57, 73, 88];
 
   return (
-    <div className="max-w-7xl mx-auto px-4 sm:px-6 lg:px-8 py-10 animate-fadeIn">
+    <div className="animate-fadeIn">
+      <div className="max-w-7xl mx-auto px-4 sm:px-6 lg:px-8 py-10">
       <div className="mb-10 text-center">
         <h1 className="text-3xl font-extrabold text-[#2C1810] tracking-tight">Kemitraan UMKM TemuKopi</h1>
         <p className="text-sm text-[#8B6B4A] mt-2 font-medium max-w-sm mx-auto">Daftarkan coffee shop Anda agar terdaftar dan terintegrasi langsung di peta pencarian cerdas kami.</p>
@@ -2158,9 +2360,91 @@ function UMKMPage({
                 <span className="text-[10px] text-[#8B6B4A] font-bold">30 Mei</span>
               </div>
             </div>
-          </div>
         </div>
       </div>
+    </div>
+
+      {/* Keuntungan Bergabung */}
+      <section className="mt-16 mb-12">
+        <h2 className="text-2xl font-extrabold text-[#2C1810] text-center mb-2 tracking-tight">Keuntungan Bergabung</h2>
+        <p className="text-sm text-[#8B6B4A] text-center font-medium mb-8 max-w-md mx-auto">Mengapa ratusan pemilik kedai kopi memilih TemuKopi sebagai platform utama mereka</p>
+        <div className="grid grid-cols-1 sm:grid-cols-2 lg:grid-cols-4 gap-5">
+          {[
+            { emoji: "🌐", title: "Visibilitas Online", desc: "Kedai Anda tampil di pencarian cerdas yang diakses ribuan pecinta kopi setiap hari." },
+            { emoji: "🤖", title: "AI Recommendation", desc: "Kopi Anda otomatis direkomendasikan oleh Mood Finder AI kepada pengguna yang cocok." },
+            { emoji: "📊", title: "Analytics Dashboard", desc: "Pantau jumlah pengunjung, favorit, dan ulasan toko secara real-time." },
+            { emoji: "🎯", title: "Promo Tools", desc: "Pasang kupon promo langsung di platform dan jangkau pelanggan baru." },
+          ].map((b) => (
+            <div key={b.title} className="bg-card border border-border/60 rounded-3xl p-6 text-center hover:shadow-lg hover:-translate-y-1 transition-all duration-300">
+              <div className="text-3xl mb-3">{b.emoji}</div>
+              <h3 className="font-extrabold text-sm text-[#2C1810] mb-2">{b.title}</h3>
+              <p className="text-xs text-[#8B6B4A] font-medium leading-relaxed">{b.desc}</p>
+            </div>
+          ))}
+        </div>
+      </section>
+
+      {/* Stats Counter */}
+      <section className="mb-12">
+        <div className="bg-[#2C1810] rounded-3xl p-8 md:p-10 shadow-xl">
+          <div className="grid grid-cols-2 md:grid-cols-4 gap-6 text-center">
+            {[
+              { value: "500+", label: "Mitra UMKM" },
+              { value: "50.000+", label: "Pengguna Aktif" },
+              { value: "12", label: "Kota Terjangkau" },
+              { value: "98%", label: "Tingkat Kepuasan" },
+            ].map((s) => (
+              <div key={s.label}>
+                <p className="text-3xl md:text-4xl font-black text-[#C8813A] tracking-tight">{s.value}</p>
+                <p className="text-xs text-[#A89278] font-bold mt-1 uppercase tracking-wider">{s.label}</p>
+              </div>
+            ))}
+          </div>
+        </div>
+      </section>
+
+      {/* Testimonial Mitra */}
+      <section className="mb-12">
+        <h2 className="text-2xl font-extrabold text-[#2C1810] text-center mb-2 tracking-tight">Cerita Sukses Mitra Kami</h2>
+        <p className="text-sm text-[#8B6B4A] text-center font-medium mb-8">Kata pemilik kedai yang sudah bergabung di TemuKopi</p>
+        <div className="grid grid-cols-1 sm:grid-cols-2 gap-6">
+          {[
+            { name: "Ibu Ratna – Kopi Selasar Jati", text: "Sejak bergabung di TemuKopi, pengunjung kedai saya naik 40%! Banyak pelanggan baru yang datang karena rekomendasi AI.", rating: 5 },
+            { name: "Pak Dedi – Laju Kopi Surabaya", text: "Dashboard analytics-nya sangat membantu untuk mengambil keputusan bisnis. Saya bisa tahu menu mana yang paling diminati.", rating: 5 },
+          ].map((t) => (
+            <div key={t.name} className="bg-card border border-border/60 rounded-3xl p-6 shadow-sm">
+              <div className="flex gap-0.5 mb-3">{[1,2,3,4,5].map(s => <Star key={s} className={`w-4 h-4 ${s <= t.rating ? 'text-amber-500 fill-amber-500' : 'text-amber-200'}`} />)}</div>
+              <p className="text-xs text-[#8B6B4A] font-semibold leading-relaxed italic mb-4">&ldquo;{t.text}&rdquo;</p>
+              <p className="text-xs font-extrabold text-[#2C1810]">{t.name}</p>
+            </div>
+          ))}
+        </div>
+      </section>
+
+      {/* FAQ */}
+      <section className="mb-6">
+        <h2 className="text-2xl font-extrabold text-[#2C1810] text-center mb-2 tracking-tight">Pertanyaan Umum (FAQ)</h2>
+        <p className="text-sm text-[#8B6B4A] text-center font-medium mb-8">Jawaban atas pertanyaan yang sering ditanyakan mitra baru</p>
+        <div className="max-w-2xl mx-auto space-y-3">
+          {[
+            { q: "Apakah pendaftaran di TemuKopi gratis?", a: "Ya! Pendaftaran mitra UMKM sepenuhnya gratis, tanpa biaya berlangganan bulanan apapun." },
+            { q: "Berapa lama proses verifikasi kedai saya?", a: "Proses verifikasi membutuhkan waktu 1-3 hari kerja setelah pengajuan formulir lengkap." },
+            { q: "Apakah saya bisa memasang promo sendiri?", a: "Tentu! Anda bisa membuat dan mengelola promo dari dashboard mitra kapan saja." },
+            { q: "Bagaimana cara meningkatkan visibilitas kedai?", a: "Lengkapi profil, tambahkan foto berkualitas, dan dorong pelanggan untuk memberikan ulasan." },
+          ].map((faq, i) => (
+            <details key={i} className="bg-card border border-border/60 rounded-2xl shadow-sm group">
+              <summary className="px-5 py-4 text-sm font-bold text-[#2C1810] cursor-pointer flex items-center justify-between hover:text-[#C8813A] transition-colors">
+                {faq.q}
+                <ChevronDown className="w-4 h-4 text-[#8B6B4A] group-open:rotate-180 transition-transform shrink-0" />
+              </summary>
+              <div className="px-5 pb-4 text-xs text-[#8B6B4A] font-medium leading-relaxed border-t border-border/30 pt-3">{faq.a}</div>
+            </details>
+          ))}
+        </div>
+      </section>
+      </div>
+
+      <Footer nav={nav} />
 
       {/* Success Modal Dialogue */}
       {showSuccessModal && createPortal(
@@ -2229,8 +2513,24 @@ function FavoritPage({
   const history = [shops[3] || shops[0], shops[0], shops[1]];
 
   return (
-    <div className="max-w-3xl mx-auto px-4 sm:px-6 py-10 animate-fadeIn">
-      <h1 className="text-3xl font-extrabold text-[#2C1810] mb-8 tracking-tight">Kedai Disimpan</h1>
+    <div className="animate-fadeIn">
+    <div className="max-w-3xl mx-auto px-4 sm:px-6 py-10">
+      <h1 className="text-3xl font-extrabold text-[#2C1810] mb-6 tracking-tight">Kedai Disimpan</h1>
+
+      {/* Stats Ringkasan */}
+      <div className="grid grid-cols-3 gap-4 mb-8">
+        {[
+          { icon: <Heart className="w-4.5 h-4.5 text-red-500 fill-red-500" />, value: favShops.length, label: "Favorit" },
+          { icon: <Star className="w-4.5 h-4.5 text-amber-500 fill-amber-500" />, value: 5, label: "Ulasan Ditulis" },
+          { icon: <Tag className="w-4.5 h-4.5 text-[#C8813A]" />, value: 2, label: "Promo Diklaim" },
+        ].map((item) => (
+          <div key={item.label} className="bg-card border border-border/60 rounded-2xl p-4 text-center shadow-sm">
+            <div className="flex justify-center mb-1.5">{item.icon}</div>
+            <p className="text-xl font-black text-[#2C1810]">{item.value}</p>
+            <p className="text-[10px] font-bold text-[#8B6B4A] uppercase tracking-wide">{item.label}</p>
+          </div>
+        ))}
+      </div>
 
       {/* Tabs */}
       <div className="flex border-b border-border/40 gap-1 overflow-x-auto [&::-webkit-scrollbar]:hidden mb-6">
@@ -2338,6 +2638,32 @@ function FavoritPage({
           ))}
         </div>
       )}
+
+      {/* Mungkin Kamu Suka */}
+      <section className="mt-12 mb-6">
+        <h2 className="text-xl font-extrabold text-[#2C1810] mb-2 tracking-tight">Mungkin Kamu Suka</h2>
+        <p className="text-xs text-[#8B6B4A] font-medium mb-5">Rekomendasi berdasarkan tag favorit kamu</p>
+        <div className="grid grid-cols-1 sm:grid-cols-3 gap-4">
+          {shops.filter(s => !favs.has(s.id)).slice(0, 3).map((shop) => (
+            <div key={shop.id} className="bg-card border border-border/60 rounded-2xl overflow-hidden shadow-sm hover:shadow-md transition-all group cursor-pointer" onClick={() => { setSelectedShopId(shop.id); nav('detail'); }}>
+              <img src={shop.img} alt={shop.name} className="w-full h-32 object-cover bg-[#F0E8DC] group-hover:scale-105 transition-transform duration-500" />
+              <div className="p-4">
+                <p className="font-extrabold text-sm text-[#2C1810] group-hover:text-[#C8813A] transition-colors truncate">{shop.name}</p>
+                <div className="flex items-center gap-1.5 mt-1 text-xs text-[#8B6B4A] font-semibold">
+                  <Star className="w-3 h-3 text-amber-500 fill-amber-500" />
+                  <span>{shop.rating} · {shop.city}</span>
+                </div>
+                <div className="flex flex-wrap gap-1 mt-2">
+                  {shop.tags.slice(0, 2).map(t => <Pill key={t} label={t} />)}
+                </div>
+              </div>
+            </div>
+          ))}
+        </div>
+      </section>
+    </div>
+
+    <Footer nav={nav} />
     </div>
   );
 }
@@ -2385,7 +2711,8 @@ function ProfilPage({
   const activeClaimedPromos = promoData.filter((p) => claimedPromos.has(p.id));
 
   return (
-    <div className="max-w-7xl mx-auto px-4 sm:px-6 lg:px-8 py-10 animate-fadeIn">
+    <div className="animate-fadeIn">
+    <div className="max-w-7xl mx-auto px-4 sm:px-6 lg:px-8 py-10">
       <div className="grid lg:grid-cols-12 gap-8 items-start">
         {/* Left Profile Card and navigation menu */}
         <div className="lg:col-span-4 space-y-6">
@@ -2557,8 +2884,32 @@ function ProfilPage({
               </div>
             </div>
           </div>
+          {/* Achievement Badges */}
+          <div className="bg-card border border-border/80 rounded-3xl p-6 shadow-xl">
+            <h2 className="font-extrabold text-[#2C1810] text-sm flex items-center gap-2 border-b border-border/30 pb-3 mb-5">
+              <Sparkles className="w-5 h-5 text-[#C8813A]" /> Pencapaian Kopimu
+            </h2>
+            <div className="grid grid-cols-2 sm:grid-cols-4 gap-4">
+              {[
+                { emoji: "☕", title: "Pencinta Espresso", desc: "Sudah menjelajah 5+ kedai espresso", unlocked: true },
+                { emoji: "🌍", title: "Explorer 3 Kota", desc: "Menjelajah kedai di 3 kota berbeda", unlocked: true },
+                { emoji: "⭐", title: "Review Master", desc: "Menulis 5+ ulasan kedai kopi", unlocked: true },
+                { emoji: "🎯", title: "AI Expert", desc: "Menggunakan Mood Finder 10 kali", unlocked: false },
+              ].map((badge, i) => (
+                <div key={i} className={`text-center p-4 rounded-2xl border transition-all ${badge.unlocked ? 'bg-gradient-to-b from-amber-50 to-orange-50 border-amber-200 shadow-sm' : 'bg-gray-50 border-gray-200 opacity-50 grayscale'}`}>
+                  <div className="text-3xl mb-2">{badge.emoji}</div>
+                  <p className="text-xs font-extrabold text-[#2C1810]">{badge.title}</p>
+                  <p className="text-[9px] text-[#8B6B4A] font-semibold mt-1 leading-relaxed">{badge.desc}</p>
+                  {badge.unlocked && <span className="inline-block mt-2 text-[8px] font-black bg-emerald-100 text-emerald-700 px-2 py-0.5 rounded-full border border-emerald-200">✓ Terbuka</span>}
+                </div>
+              ))}
+            </div>
+          </div>
         </div>
       </div>
+    </div>
+
+    <Footer nav={nav} />
     </div>
   );
 }
