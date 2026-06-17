@@ -539,7 +539,6 @@ function BottomNav({ page, nav }: { page: Page; nav: (p: Page) => void }) {
             onClick={() => {
               if (p === "profil") {
                 if (!user) nav("login");
-                else if (user.role === "admin") nav("admin");
                 else nav("profil");
               } else {
                 nav(p);
@@ -566,7 +565,7 @@ function Footer({ nav }: { nav: (p: Page) => void }) {
     { icon: <Utensils className="w-5 h-5" />, label: "Menu Sesuai Selera" },
   ];
   return (
-    <footer className="bg-[#2C1810] text-[#FAF6F0] py-16 px-4 sm:px-6 relative overflow-hidden">
+    <footer className="bg-[#2C1810] text-[#FAF6F0] pt-16 pb-36 md:pb-16 px-4 sm:px-6 relative overflow-hidden">
       <div className="absolute top-0 right-0 w-96 h-96 bg-[#C8813A]/5 rounded-full blur-3xl" />
       <div className="max-w-7xl mx-auto relative z-10">
         <div className="text-center mb-12">
@@ -3069,7 +3068,7 @@ export default function App() {
   };
 
   return (
-    <div className="min-h-screen bg-background flex flex-col justify-between selection:bg-[#C8813A] selection:text-white">
+    <div className="min-h-screen bg-[#FAF6F0] flex flex-col justify-between selection:bg-[#C8813A] selection:text-white">
       {showPreloader && (
         <div className="fixed inset-0 bg-[#FAF6F0] z-[9999] flex flex-col items-center justify-center animate-preloader-fadeOut">
           <div className="flex flex-col items-center gap-4 animate-logo-scale">
@@ -3086,7 +3085,7 @@ export default function App() {
       )}
       <div>
         <Navbar page={page} nav={nav} favCount={favs.size} />
-        <main className="pb-20 md:pb-6 animate-page-transition" key={page}>
+        <main className={`${["home", "rekomendasi", "favorit", "profil", "promo", "umkm"].includes(page) ? "" : "pb-20 md:pb-6"} animate-page-transition`} key={page}>
           {page === "home" && (
             <HomePage
               nav={nav}
