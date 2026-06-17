@@ -628,7 +628,7 @@ function HomePage({
   };
 
   return (
-    <div className="animate-fadeIn">
+    <div className="flex-1 flex flex-col justify-between animate-fadeIn">
       {/* Hero */}
       <section
         className="relative h-[560px] md:h-[640px] flex items-center overflow-hidden"
@@ -1141,7 +1141,7 @@ function RekomendasiPage({ nav }: { nav: (p: Page) => void }) {
   };
 
   return (
-    <div className="animate-fadeIn">
+    <div className="flex-1 flex flex-col justify-between animate-fadeIn">
     <div className="max-w-7xl mx-auto px-4 sm:px-6 lg:px-8 py-10">
       <div className="mb-10 text-center">
         <h1 className="text-3xl font-extrabold text-[#2C1810] tracking-tight">
@@ -2075,7 +2075,7 @@ function PromoPage({
   ];
 
   return (
-    <div className="animate-fadeIn">
+    <div className="flex-1 flex flex-col justify-between animate-fadeIn">
       <div className="max-w-7xl mx-auto px-4 sm:px-6 lg:px-8 py-10">
       <div className="mb-10 text-center">
         <h1 className="text-3xl font-extrabold text-[#2C1810] tracking-tight">Kupon Promo & Paket Hemat</h1>
@@ -2272,7 +2272,7 @@ function UMKMPage({
   const chartData = [45, 62, 38, 71, 55, 83, 49, 67, 72, 88, 61, 75, 90, 54, 68, 43, 79, 65, 58, 82, 74, 91, 67, 53, 78, 84, 69, 57, 73, 88];
 
   return (
-    <div className="animate-fadeIn">
+    <div className="flex-1 flex flex-col justify-between animate-fadeIn">
       <div className="max-w-7xl mx-auto px-4 sm:px-6 lg:px-8 py-10">
       <div className="mb-10 text-center">
         <h1 className="text-3xl font-extrabold text-[#2C1810] tracking-tight">Kemitraan UMKM TemuKopi</h1>
@@ -2532,7 +2532,7 @@ function FavoritPage({
   const history = [shops[3] || shops[0], shops[0], shops[1]];
 
   return (
-    <div className="animate-fadeIn">
+    <div className="flex-1 flex flex-col justify-between animate-fadeIn">
     <div className="max-w-3xl mx-auto px-4 sm:px-6 py-10">
       <h1 className="text-3xl font-extrabold text-[#2C1810] mb-6 tracking-tight">Kedai Disimpan</h1>
 
@@ -2743,7 +2743,7 @@ function ProfilPage({
   const activeClaimedPromos = promoData.filter((p) => claimedPromos.has(p.id));
 
   return (
-    <div className="animate-fadeIn">
+    <div className="flex-1 flex flex-col justify-between animate-fadeIn">
     <div className="max-w-7xl mx-auto px-4 sm:px-6 lg:px-8 py-10">
       <div className="grid lg:grid-cols-12 gap-8 items-start">
         {/* Left Profile Card and navigation menu */}
@@ -3083,9 +3083,9 @@ export default function App() {
           </div>
         </div>
       )}
-      <div>
+      <div className="flex-1 flex flex-col">
         <Navbar page={page} nav={nav} favCount={favs.size} />
-        <main className={`${["home", "rekomendasi", "favorit", "profil", "promo", "umkm"].includes(page) ? "" : "pb-20 md:pb-6"} animate-page-transition`} key={page}>
+        <main className={`${["home", "rekomendasi", "favorit", "profil", "promo", "umkm"].includes(page) ? "flex-1 flex flex-col" : "pb-20 md:pb-6"} animate-page-transition`} key={page}>
           {page === "home" && (
             <HomePage
               nav={nav}
