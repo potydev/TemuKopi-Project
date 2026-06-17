@@ -1,139 +1,86 @@
-import { useState } from "react";
-import { useNavigate } from "react-router";
-import { Icons } from "@/app/components/Icons";
-import { useApp } from "@/app/context/AppContext";
-import { motion } from "motion/react";
-import { toast } from "sonner";
+import { useState, type FormEvent } from "react";
+import { Coffee } from "lucide-react";
 
-export function LoginPage() {
+export interface CurrentUser {
+    name: string;
+    email: string;
+    role: "user" | "admin";
+}
+
+interface LoginPageProps {
+    onLogin: (user: CurrentUser) => void;
+    nav: (page: any) => void;
+}
+
+export function LoginPage({ onLogin, nav }: LoginPageProps) {
     const [email, setEmail] = useState("");
     const [password, setPassword] = useState("");
-    const [isLoading, setIsLoading] = useState(false);
-    const { setUser } = useApp();
-    const navigate = useNavigate();
+    const [error, setError] = useState("");
+    const [loading, setLoading] = useState(false);
 
-    const handleLogin = (e: React.FormEvent) => {
+    const submit = (e: FormEvent) => {
         e.preventDefault();
-        setIsLoading(true);
-
-        // Simulate login
+        setError("");
+        setLoading(true);
         setTimeout(() => {
-            setIsLoading(false);
-            if (email === "admin@temukopi.id") {
-                setUser({ name: "Admin TemuKopi", email, role: "admin" });
-                toast.success("Selamat datang, Admin!");
-                navigate("/");
-            } else if (email === "merchant@temukopi.id") {
-                setUser({ name: "Kopi Kenangan", email, role: "merchant" });
-                toast.success("Halo, Merchant!");
-                navigate("/");
+            setLoading(false);
+            if (email === "admin@temukopi.id" && password === "admin123") {
+                onLogin({ name: "Admin TemuKopi", email, role: "admin" });
+            } else if (email && password.length >= 6) {
+                onLogin({ name: email.split("@")[0] || "Pengguna", email, role: "user" });
             } else {
-                setUser({ name: "Fakhrizz", email, role: "user" });
-                toast.success("Login Berhasil!");
-                navigate("/");
+                setError("Email atau password tidak valid. Min. 6 karakter.");
             }
-        }, 1500);
+        }, 500);
     };
 
     return (
-        <div className="min-h-screen bg-[#FAF6F0] flex items-center justify-center p-4 relative overflow-hidden">
-            {/* Decorative elements */}
-            <div className="absolute top-[-10%] left-[-10%] w-64 h-64 bg-[#C8813A]/5 rounded-full blur-3xl animate-pulse" />
-            <div className="absolute bottom-[-10%] right-[-10%] w-96 h-96 bg-[#2C1810]/5 rounded-full blur-3xl" />
-
-            <motion.div
-                initial={{ opacity: 0, y: 20 }}
-                animate={{ opacity: 1, y: 0 }}
-                className="w-full max-w-md bg-white rounded-[32px] p-8 md:p-10 shadow-[0_32px_64px_-16px_rgba(44,24,16,0.1)] border border-[#2C1810]/5 z-10"
-            >
-                <div className="text-center mb-8">
-                    <div className="w-16 h-16 rounded-2xl bg-[#2C1810] flex items-center justify-center mx-auto mb-4 shadow-lg">
-                        <Icons.Coffee className="w-8 h-8 text-[#FAF6F0]" />
+        <div className="max-w-md mx-auto px-4 py-12 animate-fadeIn">
+            <div className="bg-card border border-border/80 rounded-3xl p-8 shadow-xl">
+                <div className="flex flex-col items-center mb-6">
+                    <div className="w-16 h-16 rounded-2xl bg-[#2C1810] flex items-center justify-center mb-3 shadow-lg">
+                        <Coffee className="w-8 h-8 text-[#FAF6F0]" />
                     </div>
-                    <h1 className="text-2xl font-extrabold text-[#2C1810]">TemuKopi</h1>
-                    <p className="text-sm text-[#8B6B4A] font-medium mt-1">
-                        Masuk untuk menjelajahi rasa kopi terbaik
-                    </p>
+                    <h1 className="font-extrabold text-2xl text-[#2C1810] tracking-tight">Masuk ke TemuKopi</h1>
+                    <p className="text-xs text-[#8B6B4A] font-semibold mt-1 text-center">Akses profil, favorit, dan dashboard admin.</p>
                 </div>
-
-                <form onSubmit={handleLogin} className="space-y-5">
-                    <div className="space-y-2">
-                        <label className="text-xs font-bold text-[#8B6B4A] uppercase tracking-wider ml-1">
-                            Email
-                        </label>
-                        <div className="relative">
-                            <div className="absolute inset-y-0 left-0 pl-4 flex items-center pointer-events-none text-[#8B6B4A]">
-                                <Icons.User className="w-4 h-4" />
-                            </div>
-                            <input
-                                type="email"
-                                required
-                                value={email}
-                                onChange={(e) => setEmail(e.target.value)}
-                                placeholder="nama@email.com"
-                                className="w-full bg-[#FAF6F0] border border-[#2C1810]/10 rounded-2xl py-3.5 pl-11 pr-4 text-sm font-semibold text-[#2C1810] outline-none focus:ring-2 focus:ring-[#C8813A] focus:bg-white transition-all shadow-inner"
-                            />
-                        </div>
+                <form onSubmit={submit} className="space-y-4">
+                    <div>
+                        <label className="text-[10px] font-extrabold text-[#8B6B4A] uppercase tracking-wider">Email</label>
+                        <input
+                            type="email"
+                            required
+                            value={email}
+                            onChange={(e) => setEmail(e.target.value)}
+                            placeholder="email@contoh.com"
+                            className="w-full mt-1 px-4 py-3 rounded-xl border border-border/40 bg-[#FAF6F0]/50 text-sm font-semibold text-[#2C1810] focus:outline-none focus:border-[#C8813A]"
+                        />
                     </div>
-
-                    <div className="space-y-2">
-                        <label className="text-xs font-bold text-[#8B6B4A] uppercase tracking-wider ml-1">
-                            Kata Sandi
-                        </label>
-                        <div className="relative">
-                            <div className="absolute inset-y-0 left-0 pl-4 flex items-center pointer-events-none text-[#8B6B4A]">
-                                <Icons.CheckCircle2 className="w-4 h-4" />
-                            </div>
-                            <input
-                                type="password"
-                                required
-                                value={password}
-                                onChange={(e) => setPassword(e.target.value)}
-                                placeholder="••••••••"
-                                className="w-full bg-[#FAF6F0] border border-[#2C1810]/10 rounded-2xl py-3.5 pl-11 pr-4 text-sm font-semibold text-[#2C1810] outline-none focus:ring-2 focus:ring-[#C8813A] focus:bg-white transition-all shadow-inner"
-                            />
-                        </div>
+                    <div>
+                        <label className="text-[10px] font-extrabold text-[#8B6B4A] uppercase tracking-wider">Password</label>
+                        <input
+                            type="password"
+                            required
+                            value={password}
+                            onChange={(e) => setPassword(e.target.value)}
+                            placeholder="••••••••"
+                            className="w-full mt-1 px-4 py-3 rounded-xl border border-border/40 bg-[#FAF6F0]/50 text-sm font-semibold text-[#2C1810] focus:outline-none focus:border-[#C8813A]"
+                        />
                     </div>
-
-                    <button
-                        type="submit"
-                        disabled={isLoading}
-                        className="w-full py-4 rounded-2xl bg-[#2C1810] text-white font-extrabold text-sm hover:bg-[#C8813A] active:scale-[0.98] transition-all shadow-lg shadow-[#2C1810]/20 flex items-center justify-center gap-2"
-                    >
-                        {isLoading ? (
-                            <div className="w-5 h-5 border-2 border-white/30 border-t-white rounded-full animate-spin" />
-                        ) : (
-                            <>
-                                Masuk Sekarang
-                                <Icons.ArrowRight className="w-4 h-4" />
-                            </>
-                        )}
+                    {error && <p className="text-xs text-red-500 font-bold bg-red-50 p-2 rounded-lg">{error}</p>}
+                    <button type="submit" disabled={loading} className="w-full py-3 rounded-xl bg-[#2C1810] hover:bg-[#C8813A] text-white text-sm font-extrabold transition-colors shadow-md disabled:opacity-60">
+                        {loading ? "Memproses..." : "Masuk"}
+                    </button>
+                    <button type="button" onClick={() => nav("home")} className="w-full py-3 rounded-xl bg-transparent border border-border/40 hover:bg-[#FAF6F0] text-[#2C1810] text-sm font-extrabold transition-all active:scale-98">
+                        Kembali ke Beranda
                     </button>
                 </form>
-
-                <div className="mt-8 pt-8 border-t border-[#2C1810]/5 text-center">
-                    <p className="text-xs text-[#8B6B4A] font-medium">
-                        Belum punya akun?{" "}
-                        <button className="text-[#C8813A] font-bold hover:underline">
-                            Daftar Gratis
-                        </button>
-                    </p>
-                    <div className="mt-4 flex flex-wrap justify-center gap-2">
-                        <button
-                            onClick={() => { setEmail("admin@temukopi.id"); setPassword("admin123"); }}
-                            className="text-[10px] px-2 py-1 rounded-full bg-[#F0E8DC] text-[#8B6B4A] font-bold hover:bg-[#2C1810] hover:text-white transition-colors"
-                        >
-                            Demo Admin
-                        </button>
-                        <button
-                            onClick={() => { setEmail("merchant@temukopi.id"); setPassword("merchant123"); }}
-                            className="text-[10px] px-2 py-1 rounded-full bg-[#F0E8DC] text-[#8B6B4A] font-bold hover:bg-[#2C1810] hover:text-white transition-colors"
-                        >
-                            Demo Merchant
-                        </button>
-                    </div>
+                <div className="mt-6 p-3 rounded-xl bg-[#FAF6F0] border border-border/30 text-[10px] font-bold text-[#8B6B4A]">
+                    <p className="text-[#2C1810] font-extrabold mb-1">Demo Akun:</p>
+                    <p>👤 User: email apapun + password min. 6 karakter</p>
+                    <p>🛡️ Admin: admin@temukopi.id / admin123</p>
                 </div>
-            </motion.div>
+            </div>
         </div>
     );
 }

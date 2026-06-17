@@ -8,6 +8,10 @@ import {
   User, ShoppingBag, Map, Leaf, Utensils, Globe, Volume2, VolumeX,
 } from "lucide-react";
 import { ImageWithFallback } from "@/app/components/figma/ImageWithFallback";
+import { useApp } from "@/app/context/AppContext";
+import { LoginPage } from "@/app/pages/LoginPage";
+import { AdminPage } from "@/app/components/AdminPage";
+import { toast } from "sonner";
 
 // Import category icons
 import nugasIcon from "@/imports/nugas.png";
@@ -21,7 +25,7 @@ import malamIcon from "@/imports/malam.png";
 import favIcon from "@/imports/fav.png";
 import clockIcon from "@/imports/clock.png";
 
-type Page = "home" | "mood" | "rekomendasi" | "pencarian" | "detail" | "menu" | "promo" | "umkm" | "ulasan" | "favorit" | "profil";
+type Page = "home" | "mood" | "rekomendasi" | "pencarian" | "detail" | "menu" | "promo" | "umkm" | "ulasan" | "favorit" | "profil" | "login" | "admin";
 
 // ── Helpers ────────────────────────────────────────────────────────────────────
 const unsplash = (id: string, w = 800, h = 500) =>
@@ -45,6 +49,7 @@ interface Shop {
   reason: string;
   facilities: string[];
   city: string;
+  active?: boolean;
 }
 
 const INITIAL_SHOPS: Shop[] = [
@@ -425,6 +430,7 @@ function ShopCard({
 
 // ── Navbar ─────────────────────────────────────────────────────────────────────
 function Navbar({ page, nav, favCount }: { page: Page; nav: (p: Page) => void; favCount: number }) {
+  const { user } = useApp();
   const [open, setOpen] = useState(false);
   const links: { label: string; p: Page }[] = [
     { label: "Beranda", p: "home" },
@@ -473,7 +479,11 @@ function Navbar({ page, nav, favCount }: { page: Page; nav: (p: Page) => void; f
               )}
             </button>
             <button
-              onClick={() => nav("profil")}
+              onClick={() => {
+                if (!user) nav("login");
+                else if (user.role === "admin") nav("admin");
+                else nav("profil");
+              }}
               className="w-10 h-10 rounded-full bg-[#2C1810] flex items-center justify-center transition-spring hover:scale-110 active:scale-90 shadow-md border-2 border-white hover:bg-[#C8813A]"
             >
               <User className="w-5 h-5 text-[#FAF6F0]" />
@@ -512,6 +522,7 @@ function Navbar({ page, nav, favCount }: { page: Page; nav: (p: Page) => void; f
 
 // ── Bottom Nav (Mobile) ────────────────────────────────────────────────────────
 function BottomNav({ page, nav }: { page: Page; nav: (p: Page) => void }) {
+  const { user } = useApp();
   const items = [
     { Icon: Home, label: "Beranda", p: "home" as Page },
     { Icon: Search, label: "Cari", p: "pencarian" as Page },
@@ -525,7 +536,15 @@ function BottomNav({ page, nav }: { page: Page; nav: (p: Page) => void }) {
         {items.map(({ Icon, label, p }) => (
           <button
             key={p}
-            onClick={() => nav(p)}
+            onClick={() => {
+              if (p === "profil") {
+                if (!user) nav("login");
+                else if (user.role === "admin") nav("admin");
+                else nav("profil");
+              } else {
+                nav(p);
+              }
+            }}
             className="flex-1 flex flex-col items-center gap-0.5 py-3 transition-transform active:scale-95"
           >
             <Icon className={`w-5 h-5 transition-transform duration-200 ${page === p ? "text-[#C8813A] scale-110" : "text-[#8B6B4A]"}`} />
@@ -704,7 +723,7 @@ function HomePage({
           </button>
         </div>
         <div className="grid grid-cols-1 sm:grid-cols-2 lg:grid-cols-4 gap-6">
-          {shops.slice(0, 4).map((shop) => (
+          {shops.filter((s) => s.active !== false).slice(0, 4).map((shop) => (
             <ShopCard
               key={shop.id}
               shop={shop}
@@ -1313,6 +1332,7 @@ function PencarianPage({
 
   // Dynamic Filtering Logic based on active search states!
   const filteredShops = shops
+    .filter((shop) => shop.active !== false)
     .filter((shop) => {
       // 1. Search Query
       if (searchQuery.trim()) {
@@ -2678,6 +2698,19 @@ function ProfilPage({
   shops: Shop[];
   claimedPromos: Set<number>;
 }) {
+  const { user, setUser } = useApp();
+
+  useEffect(() => {
+    if (!user) {
+      nav("login");
+    }
+  }, [user, nav]);
+
+  if (!user) return null;
+
+  const displayName = user.name;
+  const displayEmail = user.email;
+  const displayRole = user.role === "admin" ? "Administrator" : (user.role === "merchant" ? "Merchant Partner" : "Penikmat Kopi Gold");
   const menuItems = [
     { icon: <Home className="w-4 h-4" />, label: "Beranda Profil", active: true },
     { icon: <Coffee className="w-4 h-4" />, label: "Preferensi Kopi" },
@@ -2721,20 +2754,28 @@ function ProfilPage({
             <div className="relative w-24 h-24 mx-auto mb-4">
               <img
                 src={PROFILE_IMAGE}
-                alt="Foto profil Fakhrizz"
+                alt={`Foto profil ${displayName}`}
                 className="w-24 h-24 rounded-full object-cover bg-[#F0E8DC] border-2 border-white shadow-md"
               />
               <button className="absolute right-0 bottom-1 w-8 h-8 rounded-full bg-white border border-border/30 shadow flex items-center justify-center cursor-pointer text-[#C8813A]">
                 <Camera className="w-4 h-4" />
               </button>
             </div>
-            <h1 className="text-xl font-extrabold text-[#2C1810] tracking-tight">Fakhrizz</h1>
-            <p className="text-xs text-[#8B6B4A] font-semibold mt-1 mb-5">fakhrizz.umkm@gmail.com</p>
-            <div className="flex gap-2 justify-center">
+            <h1 className="text-xl font-extrabold text-[#2C1810] tracking-tight">{displayName}</h1>
+            <p className="text-xs text-[#8B6B4A] font-semibold mt-1 mb-5">{displayEmail}</p>
+            <div className="flex gap-2 justify-center flex-wrap">
               <span className="text-[10px] font-extrabold bg-[#2C1810] text-[#FAF6F0] px-3.5 py-1.5 rounded-full shadow-sm">
-                Penikmat Kopi Gold
+                {user?.role === "admin" ? "🛡️ Administrator" : "Penikmat Kopi Gold"}
               </span>
             </div>
+            {user?.role === "admin" && (
+              <button
+                onClick={() => nav("admin")}
+                className="mt-4 w-full py-2.5 rounded-xl bg-gradient-to-r from-[#C8813A] to-[#A0641F] text-white text-xs font-extrabold shadow-md hover:shadow-lg transition-all"
+              >
+                Buka Admin Dashboard →
+              </button>
+            )}
 
             <div className="grid grid-cols-4 gap-2 mt-6 pt-6 border-t border-border/30 lg:hidden">
               {[
@@ -2771,7 +2812,14 @@ function ProfilPage({
               <button className="w-full flex items-center gap-3.5 rounded-2xl px-4 py-3 text-xs font-bold text-[#8B6B4A] hover:bg-[#FAF6F0]">
                 <Sparkles className="w-4 h-4 text-[#C8813A]" /> Notifikasi Akun
               </button>
-              <button className="w-full flex items-center gap-3.5 rounded-2xl px-4 py-3 text-xs font-bold text-red-500 hover:bg-red-50">
+              <button
+                onClick={() => {
+                  setUser(null);
+                  toast.success("Berhasil keluar akun.");
+                  nav("home");
+                }}
+                className="w-full flex items-center gap-3.5 rounded-2xl px-4 py-3 text-xs font-bold text-red-500 hover:bg-red-50"
+              >
                 <ArrowRight className="w-4 h-4 rotate-180" /> Keluar Akun
               </button>
             </div>
@@ -2916,8 +2964,35 @@ function ProfilPage({
 
 // ── Root App Component ────────────────────────────────────────────────────────
 export default function App() {
+  const { user, setUser } = useApp();
   const [page, setPage] = useState<Page>("home");
   const [shops, setShops] = useState<Shop[]>(INITIAL_SHOPS);
+
+  const toggleShopActive = (id: string) => {
+    setShops((prev) =>
+      prev.map((s) => (s.id === id ? { ...s, active: s.active === false ? true : false } : s))
+    );
+  };
+
+  const approveShop = (approved: any) => {
+    const newShop: Shop = {
+      id: approved.id,
+      name: approved.name,
+      rating: approved.rating,
+      reviews: approved.reviews,
+      distance: "0.5 km",
+      distanceNum: 0.5,
+      tags: ["Cozy", "WiFi"],
+      price: "Rp 15.000 – 40.000",
+      priceMin: 15000,
+      img: approved.img || unsplash("1501339847302-ac426a4a7cbb"),
+      reason: "Baru bergabung di TemuKopi!",
+      facilities: ["WiFi", "Parkir"],
+      city: approved.city,
+      active: true,
+    };
+    setShops((prev) => [newShop, ...prev]);
+  };
   const [favs, setFavs] = useState<Set<string>>(new Set(["tanamera"]));
   const [claimedPromos, setClaimedPromos] = useState<Set<number>>(new Set());
   const [globalSearchQuery, setGlobalSearchQuery] = useState("");
@@ -2985,6 +3060,12 @@ export default function App() {
       n.has(id) ? n.delete(id) : n.add(id);
       return n;
     });
+  };
+
+  const handleLogin = (loggedInUser: any) => {
+    setUser(loggedInUser);
+    toast.success(`Selamat datang kembali, ${loggedInUser.name}!`);
+    nav("profil");
   };
 
   return (
@@ -3075,6 +3156,27 @@ export default function App() {
               shops={shops}
               setSelectedShopId={setSelectedShopId}
             />
+          )}
+          {page === "login" && (
+            <LoginPage nav={nav} onLogin={handleLogin} />
+          )}
+          {page === "admin" && (
+            user?.role === "admin" ? (
+              <AdminPage
+                adminName={user.name}
+                shops={shops}
+                onToggleShopActive={toggleShopActive}
+                onApproveShop={approveShop}
+                onLogout={() => {
+                  setUser(null);
+                  toast.success("Berhasil keluar akun.");
+                  nav("home");
+                }}
+                nav={nav}
+              />
+            ) : (
+              <LoginPage nav={nav} onLogin={handleLogin} />
+            )
           )}
           {page === "profil" && (
             <ProfilPage
