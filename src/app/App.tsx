@@ -1377,7 +1377,7 @@ function PencarianPage({
     <div className="max-w-7xl mx-auto px-4 sm:px-6 lg:px-8 py-10">
       <div className="grid grid-cols-1 lg:grid-cols-12 gap-8 items-start">
         {/* Filter Sidebar */}
-        <div className="lg:col-span-4 bg-card border border-border/80 rounded-3xl p-6 shadow-xl sticky top-24">
+        <div className="lg:col-span-4 bg-card border border-border/80 rounded-3xl p-6 shadow-xl lg:sticky lg:top-24">
           <h3 className="font-extrabold text-[#2C1810] text-base mb-6 border-b border-border/40 pb-3 flex items-center gap-2">
             <Filter className="w-4 h-4 text-[#C8813A]" /> Penyaring Kedai
           </h3>
