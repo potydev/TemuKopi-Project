@@ -16,7 +16,7 @@ TemuKopi hadir dengan serangkaian fitur premium terintegrasi yang menghadirkan p
 ### 1. 🧠 Mood Finder AI Assistant
 * **Chatbot Pintar:** Pengguna dapat berinteraksi langsung dengan AI TemuKopi untuk menceritakan suasana hati mereka (misalnya: *"capek banget habis nugas butuh tempat yang tenang dengan kopi strong"*).
 * **Rekomendasi Cerdas:** AI akan memproses teks tersebut dan secara instan merekomendasikan daftar kedai kopi serta racikan kopi yang paling sesuai.
-
+tes doang
 ### 2. 🎚️ Taste Profile Matcher (Pencocok Cita Rasa)
 * **Slider Interaktif:** Pengguna dapat mengatur tingkat preferensi rasa yang diinginkan menggunakan slider interaktif:
   * 🍬 **Manis**
